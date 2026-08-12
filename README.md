@@ -133,7 +133,7 @@ venom  active
 
 ```text
 venom doctor
-  ✓ version    v0.1.0
+  ✓ version    v0.1.1
   ✓ binary     ~/.local/bin/venom
   ✓ PATH       resolves correctly
   ✓ shell      zsh
@@ -162,7 +162,7 @@ presentation output because their output is consumed by the shell.
 
 ## Supported environments
 
-- Python: `.venv/`, `venv/`, `env/`, `pyproject.toml`, `uv.lock`
+- Python: `.venv/`, `venv/`, `env/`, `pyproject.toml`, `uv.lock`, `requirements.txt`, `requirements-dev.txt`, `Pipfile`, `Pipfile.lock`, `poetry.lock`
 - Node.js: `package.json` and `node_modules/.bin`
 - Go: `go.mod` and a project `bin/` directory
 - Rust: `Cargo.toml`, `target/debug`, `target/release`
