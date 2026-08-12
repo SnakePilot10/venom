@@ -1,0 +1,30 @@
+# Project-local tooling and generated metadata
+.mex/
+.opencode/
+
+# Go build and test artifacts
+/venom
+/venom-*
+/dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+coverage.out
+coverage.html
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
