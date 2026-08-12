@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Detect Python projects that use `requirements.txt`, `requirements-dev.txt`, `Pipfile`, `Pipfile.lock`, or `poetry.lock` without requiring `pyproject.toml` or `uv.lock`.
+- Treat `.venv`, `venv`, and `env` as project-root markers only when `pyvenv.cfg` confirms a real Python virtual environment.
+
 ## [0.1.0] - 2026-08-11
 
 Initial public release.

@@ -146,3 +146,51 @@ prepend = ["tools/bin"]
 		t.Fatalf("PATH entries = %v, want configured path", project.PathPrepend)
 	}
 }
+
+func TestFindDetectsStandalonePythonVirtualEnvironment(t *testing.T) {
+	root := t.TempDir()
+	venv := filepath.Join(root, ".venv")
+	if err := os.MkdirAll(filepath.Join(venv, "bin"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(venv, "pyvenv.cfg"), []byte("home = /usr/bin\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	project, ok := Find(root)
+	if !ok {
+		t.Fatal("Find did not detect a standalone Python virtual environment")
+	}
+	if project.Root != root {
+		t.Fatalf("Find root = %q, want %q", project.Root, root)
+	}
+	if !slices.Contains(project.Detected, "Python .venv") {
+		t.Fatalf("detected = %v, want Python .venv", project.Detected)
+	}
+}
+
+func TestFindDetectsRequirementsPythonProject(t *testing.T) {
+	root := t.TempDir()
+	if err := os.WriteFile(filepath.Join(root, "requirements.txt"), []byte("requests\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	project, ok := Find(root)
+	if !ok {
+		t.Fatal("Find did not detect a requirements.txt Python project")
+	}
+	if !slices.Contains(project.Detected, "Python requirements.txt") {
+		t.Fatalf("detected = %v, want Python requirements.txt", project.Detected)
+	}
+}
+
+func TestFindDoesNotTreatArbitraryEnvDirectoryAsProject(t *testing.T) {
+	root := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(root, "env", "bin"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+
+	if _, ok := Find(root); ok {
+		t.Fatal("Find detected a project from an arbitrary env directory")
+	}
+}

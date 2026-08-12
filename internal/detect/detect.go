@@ -87,11 +87,17 @@ func findRoot(start string) (string, bool) {
 
 func hasMarker(dir string) bool {
 	markers := []string{
-		".git", ".venom.toml", "uv.lock", "pyproject.toml", "package.json",
+		".git", ".venom.toml", "uv.lock", "pyproject.toml", "requirements.txt",
+		"requirements-dev.txt", "Pipfile", "Pipfile.lock", "poetry.lock", "package.json",
 		"go.mod", "Cargo.toml", "composer.json",
 	}
 	for _, marker := range markers {
 		if exists(filepath.Join(dir, marker)) {
+			return true
+		}
+	}
+	for _, name := range []string{".venv", "venv", "env"} {
+		if exists(filepath.Join(dir, name, "pyvenv.cfg")) {
 			return true
 		}
 	}
@@ -111,11 +117,13 @@ func detectPython(project *Project) {
 			return
 		}
 	}
-	if exists(filepath.Join(project.Root, "pyproject.toml")) {
-		project.Detected = append(project.Detected, "Python pyproject.toml")
-	}
-	if exists(filepath.Join(project.Root, "uv.lock")) {
-		project.Detected = append(project.Detected, "Python uv.lock")
+	for _, marker := range []string{
+		"pyproject.toml", "uv.lock", "requirements.txt", "requirements-dev.txt",
+		"Pipfile", "Pipfile.lock", "poetry.lock",
+	} {
+		if exists(filepath.Join(project.Root, marker)) {
+			project.Detected = append(project.Detected, "Python "+marker)
+		}
 	}
 }
 
