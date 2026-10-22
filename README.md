@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/brand/venom-isotipo.png" alt="Venom snake wrapped around a terminal prompt" width="192">
+
 # venom
 
 ### Automatic project environments for Linux<br>without automatically executing project code.
